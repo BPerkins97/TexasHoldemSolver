@@ -131,16 +131,16 @@ public class BestResponse {
 
     private float[] chanceBestReponse(ChanceNode node, int player, float[][] reach_probs, long current_board) {
         List<Card> cards = this.deck.getCards();
-        if (cards.size() != node.getChildrens().size()) throw new RuntimeException();
+        if (cards.size() != node.getChildren().size()) throw new RuntimeException();
         //float[] cardWeights = getCardsWeights(player,reach_probs[1 - player],current_board);
 
         int card_num = node.getCards().size();
         // 可能的发牌情况,2代表每个人的holecard是两张
-        int possible_deals = node.getChildrens().size() - Card.long2board(current_board).length - 2;
+        int possible_deals = node.getChildren().size() - Card.long2board(current_board).length - 2;
         float[] chance_utility = new float[reach_probs[player].length];
         // 遍历每一种发牌的可能性
         for (int card = 0; card < node.getCards().size(); card++) {
-            GameTreeNode one_child = node.getChildrens().get(card);
+            GameTreeNode one_child = node.getChildren().get(card);
             Card one_card = node.getCards().get(card);
             long card_long = Card.boardCards2long(new Card[]{one_card});
 
@@ -298,9 +298,9 @@ public class BestResponse {
                 continue;
             }
 
-            oppo_prob_sum += oppo_reach_prob[one_hc.reach_prob_index];
-            oppo_card_sum[one_hc.private_cards.card1] += oppo_reach_prob[one_hc.reach_prob_index];
-            oppo_card_sum[one_hc.private_cards.card2] += oppo_reach_prob[one_hc.reach_prob_index];
+            oppo_prob_sum += oppo_reach_prob[one_hc.preflopComboIndex];
+            oppo_card_sum[one_hc.private_cards.card1] += oppo_reach_prob[one_hc.preflopComboIndex];
+            oppo_card_sum[one_hc.private_cards.card2] += oppo_reach_prob[one_hc.preflopComboIndex];
         }
 
 
@@ -310,14 +310,14 @@ public class BestResponse {
             if (Card.boardsHasIntercept(player_hc_long, board_long)) {
                 payoffs[player_hand] = 0;
             } else {
-                Integer oppo_hand = this.pcm.indPlayer2Player(player, oppo, player_hc.reach_prob_index);
+                Integer oppo_hand = this.pcm.indPlayer2Player(player, oppo, player_hc.preflopComboIndex);
                 float add_reach_prob;
                 if (oppo_hand == null) {
                     add_reach_prob = 0;
                 } else {
                     add_reach_prob = oppo_reach_prob[oppo_hand];
                 }
-                payoffs[player_hc.reach_prob_index] = (oppo_prob_sum
+                payoffs[player_hc.preflopComboIndex] = (oppo_prob_sum
                         - oppo_card_sum[player_hc.private_cards.card1]
                         - oppo_card_sum[player_hc.private_cards.card2]
                         + add_reach_prob
@@ -347,9 +347,9 @@ public class BestResponse {
         RiverCombs[] player_combs = this.rrm.getRiverCombos(player, this.pcm.getPreflopCards(player), board);  //this.river_combos[player];
         RiverCombs[] oppo_combs = this.rrm.getRiverCombos(1 - player, this.pcm.getPreflopCards(1 - player), board);  //this.river_combos[player];
 
-        float win_payoff = node.get_payoffs(ShowdownNode.ShowDownResult.NOTTIE, player)[player].floatValue();
+        float win_payoff = node.get_payoffs(ShowdownNode.ShowDownResult.NO_TIE, player)[player].floatValue();
         // hard code, 假设了player只有两个
-        float lose_payoff = node.get_payoffs(ShowdownNode.ShowDownResult.NOTTIE, 1 - player)[player].floatValue();
+        float lose_payoff = node.get_payoffs(ShowdownNode.ShowDownResult.NO_TIE, 1 - player)[player].floatValue();
 
         float[] payoffs = new float[player_hands[player]];
 
@@ -366,13 +366,13 @@ public class BestResponse {
             RiverCombs one_player_comb = player_combs[i];
             while (j < oppo_combs.length && one_player_comb.rank < oppo_combs[j].rank) {
                 RiverCombs one_oppo_comb = oppo_combs[j];
-                winsum += reach_probs[oppo][one_oppo_comb.reach_prob_index];
+                winsum += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
 
-                card_winsum[one_oppo_comb.private_cards.card1] += reach_probs[oppo][one_oppo_comb.reach_prob_index];
-                card_winsum[one_oppo_comb.private_cards.card2] += reach_probs[oppo][one_oppo_comb.reach_prob_index];
+                card_winsum[one_oppo_comb.private_cards.card1] += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
+                card_winsum[one_oppo_comb.private_cards.card2] += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
                 j++;
             }
-            payoffs[one_player_comb.reach_prob_index] = (winsum
+            payoffs[one_player_comb.preflopComboIndex] = (winsum
                     - card_winsum[one_player_comb.private_cards.card1]
                     - card_winsum[one_player_comb.private_cards.card2]
             ) * win_payoff;
@@ -387,13 +387,13 @@ public class BestResponse {
             RiverCombs one_player_comb = player_combs[i];
             while (j >= 0 && one_player_comb.rank > oppo_combs[j].rank) {
                 RiverCombs one_oppo_comb = oppo_combs[j];
-                losssum += reach_probs[oppo][one_oppo_comb.reach_prob_index];
+                losssum += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
 
-                card_losssum[one_oppo_comb.private_cards.card1] += reach_probs[oppo][one_oppo_comb.reach_prob_index];
-                card_losssum[one_oppo_comb.private_cards.card2] += reach_probs[oppo][one_oppo_comb.reach_prob_index];
+                card_losssum[one_oppo_comb.private_cards.card1] += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
+                card_losssum[one_oppo_comb.private_cards.card2] += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
                 j--;
             }
-            payoffs[one_player_comb.reach_prob_index] += (losssum
+            payoffs[one_player_comb.preflopComboIndex] += (losssum
                     - card_losssum[one_player_comb.private_cards.card1]
                     - card_losssum[one_player_comb.private_cards.card2]
             ) * lose_payoff;

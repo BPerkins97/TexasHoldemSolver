@@ -4,7 +4,7 @@ import icybee.solver.*;
 import icybee.solver.compairer.Compairer;
 import icybee.solver.ranges.PrivateCards;
 import icybee.solver.solver.GameTreeBuildingSettings;
-import icybee.solver.solver.MonteCarolAlg;
+import icybee.solver.solver.MonteCarloAlg;
 import icybee.solver.solver.ParallelCfrPlusSolver;
 import icybee.solver.solver.Solver;
 import icybee.solver.trainable.CfrPlusTrainable;
@@ -411,7 +411,7 @@ public class SolverGui {
                 , Integer.valueOf(logIntervalInput.getText())
                 , logfile_name
                 , algorithm.getSelectedIndex() == 0 ? DiscountedCfrTrainable.class : CfrPlusTrainable.class
-                , monteCarloCheckbox.isSelected() ? MonteCarolAlg.PUBLIC : MonteCarolAlg.NONE
+                , monteCarloCheckbox.isSelected() ? MonteCarloAlg.PUBLIC : MonteCarloAlg.NONE
                 , Integer.valueOf(threads.getText())
                 , 1
                 , 1

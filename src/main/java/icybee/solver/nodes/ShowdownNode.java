@@ -16,7 +16,7 @@ public class ShowdownNode extends GameTreeNode {
     }
 
     public Double[] get_payoffs(ShowDownResult result, Integer winner) {
-        if (result == ShowDownResult.NOTTIE) {
+        if (result == ShowDownResult.NO_TIE) {
             assert (winner != null);
             Double[] retval = player_payoffs[winner];
             assert (retval != null);
@@ -35,7 +35,7 @@ public class ShowdownNode extends GameTreeNode {
     }
 
     public enum ShowDownResult {
-        NOTTIE, TIE
+        NO_TIE, TIE
     }
 
 }

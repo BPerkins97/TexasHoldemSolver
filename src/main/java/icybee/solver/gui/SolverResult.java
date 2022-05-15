@@ -328,7 +328,7 @@ public class SolverResult {
             }
         } else if (node instanceof ChanceNode) {
             ChanceNode chanceNode = (ChanceNode) node;
-            List<GameTreeNode> childs = chanceNode.getChildrens();
+            List<GameTreeNode> childs = chanceNode.getChildren();
             List<Card> cards = chanceNode.getCards();
 
             assert (childs.size() == cards.size());

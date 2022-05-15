@@ -5,7 +5,7 @@ import icybee.solver.compairer.Compairer;
 import icybee.solver.gui.SolverGui;
 import icybee.solver.ranges.PrivateCards;
 import icybee.solver.solver.CfrPlusRiverSolver;
-import icybee.solver.solver.MonteCarolAlg;
+import icybee.solver.solver.MonteCarloAlg;
 import icybee.solver.solver.ParallelCfrPlusSolver;
 import icybee.solver.solver.Solver;
 import icybee.solver.trainable.CfrPlusTrainable;
@@ -131,13 +131,13 @@ public class CommandlineSolver {
                 throw new RuntimeException(String.format("algorithm not found :%s", algorithm_str));
         }
         String monte_coral_str = ns.getString("monte_carol");
-        MonteCarolAlg monte_coral;
+        MonteCarloAlg monte_coral;
         switch (monte_coral_str) {
             case "none":
-                monte_coral = MonteCarolAlg.NONE;
+                monte_coral = MonteCarloAlg.NONE;
                 break;
             case "public":
-                monte_coral = MonteCarolAlg.PUBLIC;
+                monte_coral = MonteCarloAlg.PUBLIC;
                 break;
             default:
                 throw new RuntimeException(String.format("monte coral type not found :%s", monte_coral_str));

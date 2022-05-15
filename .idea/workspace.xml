@@ -9,11 +9,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05519cf8-6074-4a2e-b2a8-c97eb2b26732" name="Default" comment=":new: 串联Poker树生成和求解">
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="05519cf8-6074-4a2e-b2a8-c97eb2b26732" name="Default" comment="Commenting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/GameTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/GameTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/gui/SolverGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/gui/SolverGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/gui/SolverResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/gui/SolverResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/nodes/ChanceNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/nodes/ChanceNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/nodes/GameTreeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/nodes/GameTreeNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/nodes/ShowdownNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/nodes/ShowdownNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/ranges/RiverCombs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/ranges/RiverCombs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/runtime/CommandlineSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/runtime/CommandlineSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/runtime/PokerSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/runtime/PokerSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/solver/BestResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/solver/BestResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/solver/CfrPlusRiverSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/solver/CfrPlusRiverSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/solver/MonteCarolAlg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/solver/MonteCarloAlg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/icybee/solver/solver/ParallelCfrPlusSolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/icybee/solver/solver/ParallelCfrPlusSolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/icybee/solver/ShortDeckSolverTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/icybee/solver/ShortDeckSolverTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/icybee/solver/TexasHoldemSolverTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/icybee/solver/TexasHoldemSolverTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -812,7 +824,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605710485748</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Ran first cleanup">
+      <created>1652607958706</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1652607958706</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -839,8 +858,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=":sparkles: 增加CFR和discounted CFR" />
-    <MESSAGE value=":pencil: 补充文档" />
     <MESSAGE value=":construction: 正在撰写turn solver部分" />
     <MESSAGE value="&quot;:new: 初步完成turn solver主体&quot;" />
     <MESSAGE value=":new: 测试完成turn-allin情况，提交两份对应配置文件" />
@@ -864,20 +881,22 @@
     <MESSAGE value=":new: modify test case to include non-shortdeck testcase" />
     <MESSAGE value=":new: optimize comparer reading speed" />
     <MESSAGE value=":bug: fix bug in pcs cfr" />
-    <option name="LAST_COMMIT_MESSAGE" value=":bug: fix bug in pcs cfr" />
+    <MESSAGE value="Ran first cleanup" />
+    <MESSAGE value="Commenting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commenting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/icybee/solver/GameTree.java</url>
-          <line>633</line>
-          <option name="timeStamp" value="3" />
+          <line>445</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/icybee/solver/GameTree.java</url>
-          <line>481</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$PROJECT_DIR$/src/main/java/icybee/solver/solver/CfrPlusRiverSolver.java</url>
+          <line>178</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

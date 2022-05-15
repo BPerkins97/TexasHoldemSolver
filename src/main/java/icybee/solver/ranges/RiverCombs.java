@@ -7,7 +7,7 @@ package icybee.solver.ranges;
 public class RiverCombs implements Comparable<RiverCombs> {
     public int rank;
     public PrivateCards private_cards;
-    public int reach_prob_index;
+    public int preflopComboIndex; // What is this reachProbabilityIndex?
     int[] board;
 
     //public float reachprob;
@@ -15,7 +15,7 @@ public class RiverCombs implements Comparable<RiverCombs> {
         this.board = board;
         this.rank = rank;
         this.private_cards = private_cards;
-        this.reach_prob_index = reach_prob_index;
+        this.preflopComboIndex = reach_prob_index;
     }
 
     @Override

@@ -4,7 +4,7 @@ import icybee.solver.*;
 import icybee.solver.compairer.Compairer;
 import icybee.solver.ranges.PrivateCards;
 import icybee.solver.solver.CfrPlusRiverSolver;
-import icybee.solver.solver.MonteCarolAlg;
+import icybee.solver.solver.MonteCarloAlg;
 import icybee.solver.solver.ParallelCfrPlusSolver;
 import icybee.solver.solver.Solver;
 import icybee.solver.trainable.CfrPlusTrainable;
@@ -83,13 +83,13 @@ public class PokerSolver {
                 throw new RuntimeException(String.format("algorithm not found :%s", algorithm));
         }
 
-        MonteCarolAlg monte_coral_alg;
+        MonteCarloAlg monte_coral_alg;
         switch (monte_carol) {
             case "none":
-                monte_coral_alg = MonteCarolAlg.NONE;
+                monte_coral_alg = MonteCarloAlg.NONE;
                 break;
             case "public":
-                monte_coral_alg = MonteCarolAlg.PUBLIC;
+                monte_coral_alg = MonteCarloAlg.PUBLIC;
                 break;
             default:
                 throw new RuntimeException(String.format("monte coral type not found :%s", monte_carol));

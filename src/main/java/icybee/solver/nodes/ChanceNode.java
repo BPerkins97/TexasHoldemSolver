@@ -41,7 +41,7 @@ public class ChanceNode extends GameTreeNode {
         return cards;
     }
 
-    public List<GameTreeNode> getChildrens() {
+    public List<GameTreeNode> getChildren() {
         return childrens;
     }
 

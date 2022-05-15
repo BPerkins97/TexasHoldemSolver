@@ -43,7 +43,7 @@ public class CfrPlusRiverSolver extends Solver {
     Class<?> trainer;
     int[] round_deal;
 
-    MonteCarolAlg monteCarolAlg;
+    MonteCarloAlg monteCarloAlg;
 
     public CfrPlusRiverSolver(
             GameTree tree,
@@ -57,7 +57,7 @@ public class CfrPlusRiverSolver extends Solver {
             int print_interval,
             String logfile,
             Class<?> trainer,
-            MonteCarolAlg monteCarolAlg
+            MonteCarloAlg monteCarloAlg
     ) {
         super(tree);
         //if(board.length != 5) throw new RuntimeException(String.format("board length %d",board.length));
@@ -92,7 +92,7 @@ public class CfrPlusRiverSolver extends Solver {
         pcm = new PrivateCardsManager(private_cards, this.player_number, Card.boardInts2long(this.initial_board));
         this.debug = debug;
         this.print_interval = print_interval;
-        this.monteCarolAlg = monteCarolAlg;
+        this.monteCarloAlg = monteCarloAlg;
     }
 
     /*
@@ -164,7 +164,7 @@ public class CfrPlusRiverSolver extends Solver {
             for (GameTreeNode one_child : childrens) setTrainable(one_child);
         } else if (root instanceof ChanceNode) {
             ChanceNode chanceNode = (ChanceNode) root;
-            List<GameTreeNode> childrens = chanceNode.getChildrens();
+            List<GameTreeNode> childrens = chanceNode.getChildren();
             for (GameTreeNode one_child : childrens) setTrainable(one_child);
         } else if (root instanceof TerminalNode) {
 
@@ -314,21 +314,21 @@ public class CfrPlusRiverSolver extends Solver {
 
     float[] chanceUtility(int player, ChanceNode node, float[][] reach_probs, int iter, long current_board) throws BoardNotFoundException {
         List<Card> cards = this.deck.getCards();
-        if (cards.size() != node.getChildrens().size()) throw new RuntimeException();
+        if (cards.size() != node.getChildren().size()) throw new RuntimeException();
         //float[] cardWeights = getCardsWeights(player,reach_probs[1 - player],current_board);
 
         int card_num = node.getCards().size();
         // 可能的发牌情况,2代表每个人的holecard是两张
-        int possible_deals = node.getChildrens().size() - Card.long2board(current_board).length - 2;
+        int possible_deals = node.getChildren().size() - Card.long2board(current_board).length - 2;
 
         float[] chance_utility = new float[reach_probs[player].length];
         // 遍历每一种发牌的可能性
         int random_deal = 0, cardcount = 0;
-        if (this.monteCarolAlg == MonteCarolAlg.PUBLIC) {
+        if (this.monteCarloAlg == MonteCarloAlg.PUBLIC) {
             random_deal = ThreadLocalRandom.current().nextInt(1, possible_deals + 1 + 2);
         }
         for (int card = 0; card < node.getCards().size(); card++) {
-            GameTreeNode one_child = node.getChildrens().get(card);
+            GameTreeNode one_child = node.getChildren().get(card);
             Card one_card = node.getCards().get(card);
             long card_long = Card.boardCards2long(new Card[]{one_card});
 
@@ -339,7 +339,7 @@ public class CfrPlusRiverSolver extends Solver {
             if (one_child == null || one_card == null) throw new RuntimeException("child is null");
 
             long new_board_long = current_board | card_long;
-            if (this.monteCarolAlg == MonteCarolAlg.PUBLIC) {
+            if (this.monteCarloAlg == MonteCarloAlg.PUBLIC) {
                 if (cardcount == random_deal) {
                     float[][] new_reach_probs = new float[2][];
 
@@ -397,7 +397,7 @@ public class CfrPlusRiverSolver extends Solver {
                 chance_utility[i] += child_utility[i];
         }
 
-        if (this.monteCarolAlg == MonteCarolAlg.PUBLIC) {
+        if (this.monteCarloAlg == MonteCarloAlg.PUBLIC) {
             throw new RuntimeException("not possible");
         }
         return chance_utility;
@@ -502,8 +502,8 @@ public class CfrPlusRiverSolver extends Solver {
     float[] showdownUtility(int player, ShowdownNode node, float[][] reach_probs, int iter, long current_board) throws BoardNotFoundException {
         // player win时候player的收益，player lose的时候收益明显为-player_payoff
         int oppo = 1 - player;
-        float win_payoff = node.get_payoffs(ShowdownNode.ShowDownResult.NOTTIE, player)[player].floatValue();
-        float lose_payoff = node.get_payoffs(ShowdownNode.ShowDownResult.NOTTIE, oppo)[player].floatValue();
+        float win_payoff = node.get_payoffs(ShowdownNode.ShowDownResult.NO_TIE, player)[player].floatValue();
+        float lose_payoff = node.get_payoffs(ShowdownNode.ShowDownResult.NO_TIE, oppo)[player].floatValue();
         PrivateCards[] player_private_cards = this.ranges[player];
         PrivateCards[] oppo_private_cards = this.ranges[oppo];
 
@@ -537,38 +537,38 @@ public class CfrPlusRiverSolver extends Solver {
             RiverCombs one_player_comb = player_combs[i];
             while (j < oppo_combs.length && one_player_comb.rank < oppo_combs[j].rank) {
                 RiverCombs one_oppo_comb = oppo_combs[j];
-                winsum += reach_probs[oppo][one_oppo_comb.reach_prob_index];
+                winsum += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
                 if (this.debug) {
-                    if (one_player_comb.reach_prob_index == 0) {
+                    if (one_player_comb.preflopComboIndex == 0) {
                         System.out.print(String.format("[%s]%s:%s-%s(%s) "
                                 , j
                                 , one_oppo_comb.private_cards.toString()
-                                , this.ranges[oppo][one_oppo_comb.reach_prob_index].weight
+                                , this.ranges[oppo][one_oppo_comb.preflopComboIndex].weight
                                 , winsum
                                 , one_oppo_comb.rank
                         ));
                     }
                 }
 
-                card_winsum[one_oppo_comb.private_cards.card1] += reach_probs[oppo][one_oppo_comb.reach_prob_index];
-                card_winsum[one_oppo_comb.private_cards.card2] += reach_probs[oppo][one_oppo_comb.reach_prob_index];
+                card_winsum[one_oppo_comb.private_cards.card1] += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
+                card_winsum[one_oppo_comb.private_cards.card2] += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
                 j++;
             }
             if (this.debug) {
                 System.out.println(String.format("Before Adding %s, win_payoff %s winsum %s, subcard1 %s subcard2 %s"
-                        , payoffs[one_player_comb.reach_prob_index]
+                        , payoffs[one_player_comb.preflopComboIndex]
                         , win_payoff
                         , winsum
                         , -card_winsum[one_player_comb.private_cards.card1]
                         , -card_winsum[one_player_comb.private_cards.card2]
                 ));
             }
-            payoffs[one_player_comb.reach_prob_index] = (winsum
+            payoffs[one_player_comb.preflopComboIndex] = (winsum
                     - card_winsum[one_player_comb.private_cards.card1]
                     - card_winsum[one_player_comb.private_cards.card2]
             ) * win_payoff;
             if (this.debug) {
-                if (one_player_comb.reach_prob_index == 0) {
+                if (one_player_comb.preflopComboIndex == 0) {
                     System.out.println(String.format("winsum %s", winsum));
                 }
             }
@@ -584,29 +584,29 @@ public class CfrPlusRiverSolver extends Solver {
             RiverCombs one_player_comb = player_combs[i];
             while (j >= 0 && one_player_comb.rank > oppo_combs[j].rank) {
                 RiverCombs one_oppo_comb = oppo_combs[j];
-                losssum += reach_probs[oppo][one_oppo_comb.reach_prob_index];
+                losssum += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
                 if (this.debug) {
-                    if (one_player_comb.reach_prob_index == 0) {
+                    if (one_player_comb.preflopComboIndex == 0) {
                         System.out.print(String.format("lose %s:%s "
                                 , one_oppo_comb.private_cards.toString()
-                                , this.ranges[oppo][one_oppo_comb.reach_prob_index].weight
+                                , this.ranges[oppo][one_oppo_comb.preflopComboIndex].weight
                         ));
                     }
                 }
 
-                card_losssum[one_oppo_comb.private_cards.card1] += reach_probs[oppo][one_oppo_comb.reach_prob_index];
-                card_losssum[one_oppo_comb.private_cards.card2] += reach_probs[oppo][one_oppo_comb.reach_prob_index];
+                card_losssum[one_oppo_comb.private_cards.card1] += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
+                card_losssum[one_oppo_comb.private_cards.card2] += reach_probs[oppo][one_oppo_comb.preflopComboIndex];
                 j--;
             }
             if (this.debug) {
-                System.out.println(String.format("Before Substract %s", payoffs[one_player_comb.reach_prob_index]));
+                System.out.println(String.format("Before Substract %s", payoffs[one_player_comb.preflopComboIndex]));
             }
-            payoffs[one_player_comb.reach_prob_index] += (losssum
+            payoffs[one_player_comb.preflopComboIndex] += (losssum
                     - card_losssum[one_player_comb.private_cards.card1]
                     - card_losssum[one_player_comb.private_cards.card2]
             ) * lose_payoff;
             if (this.debug) {
-                if (one_player_comb.reach_prob_index == 0) {
+                if (one_player_comb.preflopComboIndex == 0) {
                     System.out.println(String.format("losssum %s", losssum));
                 }
             }

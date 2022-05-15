@@ -4,7 +4,7 @@ import icybee.solver.compairer.Compairer;
 import icybee.solver.exceptions.BoardNotFoundException;
 import icybee.solver.ranges.PrivateCards;
 import icybee.solver.solver.CfrPlusRiverSolver;
-import icybee.solver.solver.MonteCarolAlg;
+import icybee.solver.solver.MonteCarloAlg;
 import icybee.solver.solver.ParallelCfrPlusSolver;
 import icybee.solver.solver.Solver;
 import icybee.solver.trainable.DiscountedCfrTrainable;
@@ -387,7 +387,7 @@ public class TexasHoldemSolverTest
                 , 10
                 ,logfile_name
                 , DiscountedCfrTrainable.class
-                ,MonteCarolAlg.NONE
+                , MonteCarloAlg.NONE
         );
         Map train_config = new HashMap();
         solver.train(train_config);
@@ -453,7 +453,7 @@ public class TexasHoldemSolverTest
                 , 10
                 ,logfile_name
                 , DiscountedCfrTrainable.class
-                ,MonteCarolAlg.NONE
+                , MonteCarloAlg.NONE
         );
         Map train_config = new HashMap();
         solver.train(train_config);
@@ -517,7 +517,7 @@ public class TexasHoldemSolverTest
                 , 10
                 ,logfile_name
                 , DiscountedCfrTrainable.class
-                ,MonteCarolAlg.NONE
+                , MonteCarloAlg.NONE
         );
         Map train_config = new HashMap();
         solver.train(train_config);
@@ -581,7 +581,7 @@ public class TexasHoldemSolverTest
                 , 10
                 ,logfile_name
                 , DiscountedCfrTrainable.class
-                ,MonteCarolAlg.PUBLIC
+                , MonteCarloAlg.PUBLIC
         );
         Map train_config = new HashMap();
         solver.train(train_config);
@@ -645,7 +645,7 @@ public class TexasHoldemSolverTest
                 , 10
                 ,logfile_name
                 , DiscountedCfrTrainable.class
-                , MonteCarolAlg.NONE
+                , MonteCarloAlg.NONE
                 ,2
                 ,1
                 ,0

@@ -1,6 +1,6 @@
 package icybee.solver.solver;
 
-public enum MonteCarolAlg {
+public enum MonteCarloAlg {
     NONE,
     PUBLIC
 }
