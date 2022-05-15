@@ -11,12 +11,14 @@ import java.util.Map;
 public abstract class Solver {
 
     GameTree tree;
-    public Solver(GameTree tree){
+
+    public Solver(GameTree tree) {
         this.tree = tree;
     }
+
     public GameTree getTree() {
         return tree;
     }
 
-    public abstract void train(Map training_config) throws  Exception;
+    public abstract void train(Map training_config) throws Exception;
 }

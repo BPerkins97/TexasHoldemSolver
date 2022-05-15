@@ -24,26 +24,26 @@ public class PokerSolver {
     GameTree tree;
     Compairer compairer;
 
-    Config loadConfig(String conf_name){
+    public PokerSolver(String compairer_type, String compairer_dic_dir, int compairer_lines, String[] ranks, String[] suits) throws IOException {
+        this.deck = new Deck(Arrays.asList(ranks), Arrays.asList(suits));
+        this.compairer = SolverEnvironment.compairerFromFile(compairer_type, compairer_dic_dir, compairer_lines);
+        this.tree = null;
+    }
+
+    Config loadConfig(String conf_name) {
         File file = new File(conf_name);
 
         Config config;
         try {
             config = new Config(file.getAbsolutePath());
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException();
         }
         return config;
     }
 
-    public PokerSolver(String compairer_type, String compairer_dic_dir, int compairer_lines, String[] ranks,String[] suits) throws IOException {
-        this.deck = new Deck(Arrays.asList(ranks), Arrays.asList(suits));
-        this.compairer = SolverEnvironment.compairerFromFile(compairer_type,compairer_dic_dir,compairer_lines);
-        this.tree = null;
-    }
-
-    public void build_game_tree(String tree_json){
-        tree = SolverEnvironment.gameTreeFromJson(tree_json,this.deck);
+    public void build_game_tree(String tree_json) {
+        tree = SolverEnvironment.gameTreeFromJson(tree_json, this.deck);
     }
 
     public String train(
@@ -64,12 +64,12 @@ public class PokerSolver {
             int fork_every_n_depth,
             int no_fork_subtree_size
     ) throws Exception {
-        if(this.tree == null)
+        if (this.tree == null)
             throw new RuntimeException("tree not initized");
         String[] initial_board_split = initial_board.split(",");
-        int[] initial_board_arr = Arrays.stream(initial_board_split).map(e -> Card.strCard2int(e)).mapToInt(i->i).toArray();
+        int[] initial_board_arr = Arrays.stream(initial_board_split).map(e -> Card.strCard2int(e)).mapToInt(i -> i).toArray();
         Class<?> algorithm_class;
-        switch(algorithm){
+        switch (algorithm) {
             case "cfr":
                 algorithm_class = CfrTrainable.class;
                 break;
@@ -80,11 +80,11 @@ public class PokerSolver {
                 algorithm_class = DiscountedCfrTrainable.class;
                 break;
             default:
-                throw new RuntimeException(String.format("algorithm not found :%s",algorithm));
+                throw new RuntimeException(String.format("algorithm not found :%s", algorithm));
         }
 
         MonteCarolAlg monte_coral_alg;
-        switch(monte_carol){
+        switch (monte_carol) {
             case "none":
                 monte_coral_alg = MonteCarolAlg.NONE;
                 break;
@@ -92,14 +92,14 @@ public class PokerSolver {
                 monte_coral_alg = MonteCarolAlg.PUBLIC;
                 break;
             default:
-                throw new RuntimeException(String.format("monte coral type not found :%s",monte_carol));
+                throw new RuntimeException(String.format("monte coral type not found :%s", monte_carol));
         }
 
-        PrivateCards[] player1Range = PrivateRangeConverter.rangeStr2Cards(player1_range,initial_board_arr);
-        PrivateCards[] player2Range = PrivateRangeConverter.rangeStr2Cards(player2_range,initial_board_arr);
+        PrivateCards[] player1Range = PrivateRangeConverter.rangeStr2Cards(player1_range, initial_board_arr);
+        PrivateCards[] player2Range = PrivateRangeConverter.rangeStr2Cards(player2_range, initial_board_arr);
 
         Solver solver;
-        if(parallel) {
+        if (parallel) {
             solver = new ParallelCfrPlusSolver(this.tree
                     , player1Range
                     , player2Range
@@ -118,7 +118,7 @@ public class PokerSolver {
                     , fork_every_n_depth
                     , no_fork_subtree_size
             );
-        }else{
+        } else {
             solver = new CfrPlusRiverSolver(this.tree
                     , player1Range
                     , player2Range
@@ -137,9 +137,9 @@ public class PokerSolver {
         solver.train(train_config);
 
         String strategy_json = solver.getTree().dumps(false).toJSONString();
-        if(output_strategy_file == null || output_strategy_file.isEmpty()){
+        if (output_strategy_file == null || output_strategy_file.isEmpty()) {
             return strategy_json;
-        }else {
+        } else {
             File output_file = new File(output_strategy_file);
             FileWriter writer = new FileWriter(output_file);
             writer.write(strategy_json);

@@ -8,14 +8,6 @@ public class GameActions {
     GameTreeNode.PokerActions action;
     Double amount;
 
-    public GameTreeNode.PokerActions getAction() {
-        return action;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
     public GameActions(GameTreeNode.PokerActions action, Double amount) {
         this.action = action;
         if (action == GameTreeNode.PokerActions.RAISE || action == GameTreeNode.PokerActions.BET) {
@@ -26,11 +18,19 @@ public class GameActions {
         this.amount = amount;
     }
 
+    public GameTreeNode.PokerActions getAction() {
+        return action;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
     @Override
     public String toString() {
-        if(amount == null) {
+        if (amount == null) {
             return this.action.toString();
-        }else{
+        } else {
             return this.action.toString() + " " + amount.toString();
         }
     }

@@ -9,10 +9,14 @@ import java.util.Iterator;
 
 public class Range implements Iterable<Integer> {
 
-    private int limit;
+    private final int limit;
 
     public Range(int limit) {
         this.limit = limit;
+    }
+
+    public static Range range(int max) {
+        return new Range(max);
     }
 
     @Override
@@ -41,9 +45,5 @@ public class Range implements Iterable<Integer> {
                 throw new UnsupportedOperationException("Can't remove values from a Range");
             }
         };
-    }
-
-    public static Range range(int max) {
-        return new Range(max);
     }
 }

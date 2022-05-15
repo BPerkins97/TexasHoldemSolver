@@ -1,15 +1,16 @@
 package icybee.solver.gui;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.swing.JTextArea;
 
 /**
  * This class extends from OutputStream to redirect output to a JTextArrea
- * @author www.codejava.net
  *
+ * @author www.codejava.net
  */
 public class CustomOutputStream extends OutputStream {
-    private JTextArea textArea;
+    private final JTextArea textArea;
 
     public CustomOutputStream(JTextArea textArea) {
         this.textArea = textArea;

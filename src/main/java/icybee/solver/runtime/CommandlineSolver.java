@@ -1,13 +1,6 @@
 package icybee.solver.runtime;
 
 import icybee.solver.*;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 import icybee.solver.compairer.Compairer;
 import icybee.solver.gui.SolverGui;
 import icybee.solver.ranges.PrivateCards;
@@ -24,16 +17,22 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CommandlineSolver {
 
-    static Config loadConfig(String conf_name){
+    static Config loadConfig(String conf_name) {
         ClassLoader classLoader = CommandlineSolver.class.getClassLoader();
         File file = new File(conf_name);
 
         Config config = null;
         try {
             config = new Config(file.getAbsolutePath());
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException();
         }
         return config;
@@ -98,7 +97,7 @@ public class CommandlineSolver {
         }
 
         String config_file = ns.getString("config");
-        if(config_file == null){
+        if (config_file == null) {
             SolverGui.main(null);
             return;
         }
@@ -106,7 +105,7 @@ public class CommandlineSolver {
         String player2_range = ns.getString("player2_range");
         String initial_board_str = ns.getString("initial_board");
         String[] initial_board_arr = initial_board_str.split(",");
-        int[] initial_board = Arrays.stream(initial_board_arr).map(e -> Card.strCard2int(e)).mapToInt(i->i).toArray();
+        int[] initial_board = Arrays.stream(initial_board_arr).map(e -> Card.strCard2int(e)).mapToInt(i -> i).toArray();
         int iteration_number = Integer.parseInt(ns.getString("iteration_number"));
         int print_interval = Integer.parseInt(ns.getString("print_interval"));
         float fork_at_action = Float.parseFloat(ns.getString("fork_at_action"));
@@ -118,7 +117,7 @@ public class CommandlineSolver {
 
         String algorithm_str = ns.getString("algorithm");
         Class<?> algorithm;
-        switch(algorithm_str){
+        switch (algorithm_str) {
             case "cfr":
                 algorithm = CfrTrainable.class;
                 break;
@@ -129,11 +128,11 @@ public class CommandlineSolver {
                 algorithm = DiscountedCfrTrainable.class;
                 break;
             default:
-                throw new RuntimeException(String.format("algorithm not found :%s",algorithm_str));
+                throw new RuntimeException(String.format("algorithm not found :%s", algorithm_str));
         }
         String monte_coral_str = ns.getString("monte_carol");
         MonteCarolAlg monte_coral;
-        switch(monte_coral_str){
+        switch (monte_coral_str) {
             case "none":
                 monte_coral = MonteCarolAlg.NONE;
                 break;
@@ -141,24 +140,23 @@ public class CommandlineSolver {
                 monte_coral = MonteCarolAlg.PUBLIC;
                 break;
             default:
-                throw new RuntimeException(String.format("monte coral type not found :%s",monte_coral_str));
+                throw new RuntimeException(String.format("monte coral type not found :%s", monte_coral_str));
         }
         int threads = Integer.parseInt(ns.getString("threads"));
         int fork_every_n_depth = Integer.parseInt(ns.getString("fork_every_n_depth"));
         int no_fork_subtree_size = Integer.parseInt(ns.getString("no_fork_subtree_size"));
 
 
-
         Config config = loadConfig(config_file);
         Deck deck = SolverEnvironment.deckFromConfig(config);
         Compairer compairer = SolverEnvironment.compairerFromConfig(config);
-        GameTree game_tree = SolverEnvironment.gameTreeFromConfig(config,deck);
+        GameTree game_tree = SolverEnvironment.gameTreeFromConfig(config, deck);
 
-        PrivateCards[] player1Range = PrivateRangeConverter.rangeStr2Cards(player1_range,initial_board);
-        PrivateCards[] player2Range = PrivateRangeConverter.rangeStr2Cards(player2_range,initial_board);
+        PrivateCards[] player1Range = PrivateRangeConverter.rangeStr2Cards(player1_range, initial_board);
+        PrivateCards[] player2Range = PrivateRangeConverter.rangeStr2Cards(player2_range, initial_board);
 
         Solver solver;
-        if(parallel) {
+        if (parallel) {
             solver = new ParallelCfrPlusSolver(game_tree
                     , player1Range
                     , player2Range
@@ -177,7 +175,7 @@ public class CommandlineSolver {
                     , fork_every_n_depth
                     , no_fork_subtree_size
             );
-        }else{
+        } else {
             solver = new CfrPlusRiverSolver(game_tree
                     , player1Range
                     , player2Range

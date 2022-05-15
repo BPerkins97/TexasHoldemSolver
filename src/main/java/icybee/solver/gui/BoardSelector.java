@@ -8,32 +8,30 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class BoardSelector {
+    public JPanel main_panel;
+    String[][] grid_names;
+    String[][] grid_text;
+    boolean[][] selecte2d;
+    BoardSelectorCallback callback;
+    RangeSelector.RangeType type;
     private JTextArea board_text;
     private JPanel board_table_holder;
     private JScrollPane board_panel;
     private JTable board_table;
     private JButton confirmButton;
-    public JPanel main_panel;
     private JButton clearButton;
+    private final String[] columnName;
 
-    private String[] columnName;
-    String[][] grid_names;
-    String[][] grid_text;
-    boolean[][] selecte2d;
-
-    BoardSelectorCallback callback;
-    RangeSelector.RangeType type;
-
-    public BoardSelector(BoardSelectorCallback callback,String init_board_str, RangeSelector.RangeType type,Frame frame) {
+    public BoardSelector(BoardSelectorCallback callback, String init_board_str, RangeSelector.RangeType type, Frame frame) {
         this.callback = callback;
         this.type = type;
         board_text.setText(init_board_str);
 
-        if (type == RangeSelector.RangeType.HOLDEM){
-            this.columnName = new String[]{"A","K","Q","J","T","9","8","7","6","5","4","3","2"};
-        }else if(type == RangeSelector.RangeType.SHORTDECK){
-            this.columnName = new String[]{"A","K","Q","J","T","9","8","7","6"};
-        }else{
+        if (type == RangeSelector.RangeType.HOLDEM) {
+            this.columnName = new String[]{"A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"};
+        } else if (type == RangeSelector.RangeType.SHORTDECK) {
+            this.columnName = new String[]{"A", "K", "Q", "J", "T", "9", "8", "7", "6"};
+        } else {
             throw new RuntimeException("range type unknown");
         }
 
@@ -43,23 +41,23 @@ public class BoardSelector {
 
         String[] boardstr = init_board_str.split(",");
         String colors = "cdhs";
-        for(int i = 0;i < 4;i ++) {
-            for(int j = 0;j < columnName.length;j ++) {
-                grid_names[i][j] = String.format("%s%c",columnName[j],colors.charAt(i));
-                String one_color_str = String.valueOf(colors.charAt(i)).replace("c","<font color=\"black\">♣</font>")
-                        .replace("d","<font color=\"red\">♦</font>")
-                        .replace("h","<font color=\"red\">♥</font>")
-                        .replace("s","<font color=\"black\">♠</font>");
-                grid_text[i][j] = String.format("<html>%s%s</html>",columnName[j],one_color_str);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < columnName.length; j++) {
+                grid_names[i][j] = String.format("%s%c", columnName[j], colors.charAt(i));
+                String one_color_str = String.valueOf(colors.charAt(i)).replace("c", "<font color=\"black\">♣</font>")
+                        .replace("d", "<font color=\"red\">♦</font>")
+                        .replace("h", "<font color=\"red\">♥</font>")
+                        .replace("s", "<font color=\"black\">♠</font>");
+                grid_text[i][j] = String.format("<html>%s%s</html>", columnName[j], one_color_str);
                 selecte2d[i][j] = false;
-                for(String one_board:boardstr){
-                    if(grid_names[i][j].equals(one_board)) selecte2d[i][j] = true;
+                for (String one_board : boardstr) {
+                    if (grid_names[i][j].equals(one_board)) selecte2d[i][j] = true;
                 }
             }
         }
 
 
-        DefaultTableModel defaultTableModel = new DefaultTableModel(grid_text, columnName){
+        DefaultTableModel defaultTableModel = new DefaultTableModel(grid_text, columnName) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -88,7 +86,7 @@ public class BoardSelector {
         board_table.setGridColor(Color.BLACK);
         board_table.setRowHeight(26);
         board_table.setCellSelectionEnabled(true);
-        board_table.setDefaultRenderer(Object.class,new BoardGridColorTableCellRenderer());
+        board_table.setDefaultRenderer(Object.class, new BoardGridColorTableCellRenderer());
 
         board_table.addMouseListener(new MouseAdapter() {
             @Override
@@ -104,8 +102,8 @@ public class BoardSelector {
         clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for(int i = 0;i < 4;i ++){
-                    for(int j = 0;j < grid_names[0].length;j ++){
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < grid_names[0].length; j++) {
                         selecte2d[i][j] = false;
                     }
                 }
@@ -123,11 +121,11 @@ public class BoardSelector {
         });
     }
 
-    void setTextByBoard(){
+    void setTextByBoard() {
         String boardstr_toset = "";
-        for(int i = 0;i < 4;i ++){
-            for(int j = 0;j < grid_names[0].length;j ++){
-                if(selecte2d[i][j])boardstr_toset += String.format("%s,",grid_names[i][j]);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < grid_names[0].length; j++) {
+                if (selecte2d[i][j]) boardstr_toset += String.format("%s,", grid_names[i][j]);
             }
         }
         board_text.setText(boardstr_toset);
@@ -135,30 +133,30 @@ public class BoardSelector {
 
 
     class BoardGridCellRenderer extends DefaultTableCellRenderer {
-        int row,colunm;
+        int row, colunm;
         float node_range;
         boolean selected;
-        public BoardGridCellRenderer(int row,int colunm,boolean selected) {
+
+        public BoardGridCellRenderer(int row, int colunm, boolean selected) {
             this.row = row;
             this.colunm = colunm;
             this.selected = selecte2d[row][colunm];
         }
 
-        public void paintComponent(Graphics g){
-            Graphics2D g2=(Graphics2D)g;
+        public void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
             g2.setColor(Color.GRAY);
-            if(this.selected)g2.setColor(Color.YELLOW);
-            g2.fillRect(0,0,getWidth(),getHeight());
+            if (this.selected) g2.setColor(Color.YELLOW);
+            g2.fillRect(0, 0, getWidth(), getHeight());
             super.paintComponent(g);
         }
     }
 
-    class BoardGridColorTableCellRenderer extends DefaultTableCellRenderer
-    {
+    class BoardGridColorTableCellRenderer extends DefaultTableCellRenderer {
         public Component getTableCellRendererComponent(JTable table, Object value,
                                                        boolean isSelected, boolean hasFocus, int row, int column) {
-            BoardGridCellRenderer cell_renderer = new BoardGridCellRenderer(row,column,isSelected);
-            return cell_renderer.getTableCellRendererComponent(table, value, false,false, row, column);
+            BoardGridCellRenderer cell_renderer = new BoardGridCellRenderer(row, column, isSelected);
+            return cell_renderer.getTableCellRendererComponent(table, value, false, false, row, column);
         }
     }
 }

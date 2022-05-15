@@ -5,8 +5,8 @@ package icybee.solver.exceptions;
  * this file cotains code for a custom exception
  */
 public class CardsNotFoundException
-extends RuntimeException{
-    public CardsNotFoundException(String errmsg){
+        extends RuntimeException {
+    public CardsNotFoundException(String errmsg) {
         super(errmsg);
     }
 }

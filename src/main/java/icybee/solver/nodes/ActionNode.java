@@ -8,7 +8,7 @@ import java.util.List;
  * Created by huangxuefeng on 2019/10/7.
  * This file contians action node implementation
  */
-public class ActionNode extends GameTreeNode{
+public class ActionNode extends GameTreeNode {
 
     List<GameActions> actions;
     List<GameTreeNode> childrens;
@@ -18,9 +18,9 @@ public class ActionNode extends GameTreeNode{
 
     int player;
 
-    public ActionNode(List<GameActions> actions, List<GameTreeNode> childrens, int player, GameRound round,Double pot,GameTreeNode parent){
-        super(round,pot,parent);
-        assert(actions.size() == childrens.size());
+    public ActionNode(List<GameActions> actions, List<GameTreeNode> childrens, int player, GameRound round, Double pot, GameTreeNode parent) {
+        super(round, pot, parent);
+        assert (actions.size() == childrens.size());
         this.actions = actions;
         this.childrens = childrens;
         this.player = player;
@@ -30,12 +30,12 @@ public class ActionNode extends GameTreeNode{
         return actions;
     }
 
-    public List<GameTreeNode> getChildrens() {
-        return childrens;
-    }
-
     public void setActions(List<GameActions> actions) {
         this.actions = actions;
+    }
+
+    public List<GameTreeNode> getChildrens() {
+        return childrens;
     }
 
     public void setChildrens(List<GameTreeNode> childrens) {

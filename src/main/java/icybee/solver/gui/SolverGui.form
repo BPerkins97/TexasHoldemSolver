@@ -943,7 +943,7 @@
                       <text value="log interval:"/>
                     </properties>
                   </component>
-                  <component id="fe523" class="javax.swing.JTextField" binding="log_interval">
+                  <component id="fe523" class="javax.swing.JTextField" binding="logIntervalInput">
                     <constraints/>
                     <properties>
                       <preferredSize width="50" height="20"/>
@@ -969,7 +969,7 @@
                       <text value="use monte coral"/>
                     </properties>
                   </component>
-                  <component id="73b0a" class="javax.swing.JCheckBox" binding="mc">
+                  <component id="73b0a" class="javax.swing.JCheckBox" binding="monteCarloCheckbox">
                     <constraints/>
                     <properties>
                       <text value=""/>
@@ -1007,7 +1007,7 @@
                       <text value="iteration:"/>
                     </properties>
                   </component>
-                  <component id="d8e77" class="javax.swing.JTextField" binding="iteration">
+                  <component id="d8e77" class="javax.swing.JTextField" binding="numIterationsInput">
                     <constraints/>
                     <properties>
                       <preferredSize width="68" height="20"/>

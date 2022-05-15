@@ -4,13 +4,14 @@ package icybee.solver.ranges;
  * Created by huangxuefeng on 2019/10/11.
  * river ranges code
  */
-public class RiverCombs implements Comparable<RiverCombs>{
-    int[] board;
+public class RiverCombs implements Comparable<RiverCombs> {
     public int rank;
     public PrivateCards private_cards;
     public int reach_prob_index;
+    int[] board;
+
     //public float reachprob;
-    public RiverCombs(int[] board,PrivateCards private_cards , int rank, int reach_prob_index) {
+    public RiverCombs(int[] board, PrivateCards private_cards, int rank, int reach_prob_index) {
         this.board = board;
         this.rank = rank;
         this.private_cards = private_cards;
